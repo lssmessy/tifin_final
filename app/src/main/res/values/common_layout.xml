@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<color name="my_color">#0099FF</color>
+<style name="tifin_theme" parent="android:Theme.Material.Light">
+    <item name="android:windowBackground">@color/my_color</item>
+</style>
+</resources>

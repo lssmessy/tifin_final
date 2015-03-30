@@ -11,6 +11,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -25,9 +27,11 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
@@ -44,7 +48,7 @@ public class MainActivity extends Activity implements LocationListener {
     GPSTracker myGps;
     Geocoder geocoder;
     EditText et;
-
+    private ConnectivityManager connectivityManager;
     double lattitude,longitude;
 
     //private LocationManager location;
@@ -53,85 +57,155 @@ public class MainActivity extends Activity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         et=(EditText)findViewById(R.id.editText1);
-        //map.setMyLocationEnabled(true);
 
-       myGps=new GPSTracker(MainActivity.this);
-        if(myGps.canGetLocation()){
-
-            lattitude=myGps.getLatitude();
-            longitude=myGps.getLongitude();
-            geocoder=new Geocoder(this, Locale.getDefault());
-            List<Address> address= null;
-            try {
-                address = geocoder.getFromLocation(lattitude,longitude,1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String City=address.get(0).getAddressLine(0);
-            String state=address.get(0).getAddressLine(1);
-            String Country=address.get(0).getAddressLine(2);
-            map=((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
-            LatLng myLL = new LatLng(lattitude,longitude);
-            map.addMarker(new MarkerOptions().position(myLL).title(City+","+state+","+Country));
-            Toast.makeText(this, myLL.toString(), Toast.LENGTH_LONG).show();
-            CameraUpdate myCam = CameraUpdateFactory.newLatLngZoom(myLL, 14);
-            map.addPolygon(new PolygonOptions().add(myLL).fillColor(Color.GRAY));
-            map.animateCamera(myCam);
-            map.setMyLocationEnabled(true);
-            et.setText(City+","+state+","+Country);
-        }
-        else
-        {
-
-            Runnable rn=new Runnable() {
-                @Override
-                public void run() {
-
-
-                        myGps.showSettingsAlert();
-
-                    }
-                };
-
-        }
-
+        checkLocation();
 
     }
 
-    public void showCurrentLocation(View view){
+    public void checkLocation(){
 
-        InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(et.getWindowToken(),0);
-        geocoder=new Geocoder(this, Locale.getDefault());
 
-        List<Address> addresss= null;
-        try {
-            addresss = geocoder.getFromLocationName(et.getText().toString(),1);
-            Address add=addresss.get(0);
-            if(addresss.size() > 0)
-            {
-                lattitude=addresss.get(0).getLatitude();
-                longitude=addresss.get(0).getLongitude();
-            }
-            List<Address> ad=geocoder.getFromLocation(lattitude,longitude,1);
-            String City=ad.get(0).getAddressLine(0);
-            String state=ad.get(0).getAddressLine(1);
-            String Country=ad.get(0).getAddressLine(2);
-            LatLng newLoc=new LatLng(lattitude,longitude);
-            CameraUpdate showLoc= CameraUpdateFactory.newLatLngZoom(newLoc,16);
-            map.animateCamera(showLoc);
-            map.addCircle(new CircleOptions().center(newLoc).radius(500).fillColor(Color.TRANSPARENT));
-            map.addMarker(new MarkerOptions().position(newLoc).title(City+","+state+","+Country));
-            et.setText(City+","+state+","+Country);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(isInternetAvailable()==false)
+        {
+            Log.i("Internet", "Disabled");
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setMessage("No internet connection is available. Please check for internet connection");
+            alert.setTitle("No Internet");
+            alert.setNegativeButton("Ok",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
         }
 
+        else if(isInternetAvailable()) {
+            Log.i("Internet","Available");
+            myGps=new GPSTracker(MainActivity.this);
+            if (myGps.canGetLocation()) {
+
+                this.lattitude = myGps.getLatitude();
+                this.longitude = myGps.getLongitude();
+                geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> address = null;
+                try {
+                    address = geocoder.getFromLocation(lattitude, longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (address != null) {
+                    String City = address.get(0).getAddressLine(0);
+                    String state = address.get(0).getAddressLine(1);
+                    String Country = address.get(0).getAddressLine(2);
+                    map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+                    LatLng myLL = new LatLng(lattitude, longitude);
+                    map.addMarker(new MarkerOptions().position(myLL).title(City + "," + state + "," + Country));
+                    Toast.makeText(this, myLL.toString(), Toast.LENGTH_LONG).show();
+                    CameraUpdate myCam = CameraUpdateFactory.newLatLngZoom(myLL, 14);
+                   // map.addPolygon(new PolygonOptions().add(myLL).fillColor(Color.GRAY));
+                    map.animateCamera(myCam);
+                    map.addCircle(new CircleOptions().center(myLL).visible(true).radius(200));
+                    map.setMyLocationEnabled(true);
+                    et.setText(City + "," + state + "," + Country);
+
+                    map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                        @Override
+                        public boolean onMyLocationButtonClick() {
+                            map.clear();
+                            checkLocation();
+                            return true;
+                        }
+                    });
+                }
+            }
+        }
+
+      
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onCreate(Bundle.EMPTY);
+
+    }
+    //To check whether internet is ON/OFF
+    public boolean isInternetAvailable(){
+        connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState()== NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState()== NetworkInfo.State.CONNECTED)
+
+            return  true;
+
+       else if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState()== NetworkInfo.State.DISCONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState()== NetworkInfo.State.DISCONNECTED)
+        {
+
+            return false;
+        }
+
+        return  false;
+
+    }
 
 
+    public void showCurrentLocation(View view) {
+        
+        if(!isempty()) {
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+            geocoder = new Geocoder(this, Locale.getDefault());
+
+            List<Address> addresss = null;
+            try {
+                addresss = geocoder.getFromLocationName(et.getText().toString(), 1);
+                Address add = addresss.get(0);
+
+                if (addresss.size() > 0) {
+                    lattitude = addresss.get(0).getLatitude();
+                    longitude = addresss.get(0).getLongitude();
+                    Toast.makeText(this, String.valueOf(lattitude) + "=>" + String.valueOf(longitude), Toast.LENGTH_SHORT).show();
+                }
+                List<Address> ad = geocoder.getFromLocation(lattitude, longitude, 1);
+                String City = ad.get(0).getAddressLine(0);
+                String state = ad.get(0).getAddressLine(1);
+                String Country = ad.get(0).getAddressLine(2);
+                Log.i("latlng", String.valueOf(lattitude) + "=>" + String.valueOf(longitude));
+
+                LatLng newLoc = new LatLng(lattitude, longitude);
+                CameraUpdate showLoc = CameraUpdateFactory.newLatLngZoom(newLoc, 16);
+                if (showLoc != null) {
+                    map.clear();
+                    map.animateCamera(showLoc);
+                    map.addCircle(new CircleOptions().center(newLoc).visible(true).radius(200));
+
+                    map.addMarker(new MarkerOptions().position(newLoc).title(City + "," + state + "," + Country));
+                    et.setText(City + "," + state + "," + Country);
+
+                } else {
+                    Toast.makeText(this, String.valueOf(lattitude) + "=>" + String.valueOf(longitude), Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (IndexOutOfBoundsException e) {
+
+                e.printStackTrace();
+            }
 
 
+        }
+        else  Toast.makeText(this, "Enter something to search", Toast.LENGTH_LONG).show();
+
+    }
+
+    private boolean isempty() {
+        if(et.getText().length() > 0)
+            return false;
+        else
+        return true;
     }
 
     public void removeText(View view){
