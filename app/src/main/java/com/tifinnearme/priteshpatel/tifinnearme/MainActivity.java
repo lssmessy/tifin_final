@@ -126,10 +126,25 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     @Override
+    protected void onPostResume() {
+
+        super.onPostResume();
+        checkLocation();
+    }
+
+    @Override
     protected void onResume() {
-        super.onCreate(Bundle.EMPTY);
+        super.onResume();
+        checkLocation();
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkLocation();
+    }
+
     //To check whether internet is ON/OFF
     public boolean isInternetAvailable(){
         connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
