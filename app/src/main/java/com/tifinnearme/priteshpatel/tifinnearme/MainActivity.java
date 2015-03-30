@@ -84,7 +84,7 @@ public class MainActivity extends Activity implements LocationListener {
             Log.i("Internet","Available");
             myGps=new GPSTracker(MainActivity.this);
             if (myGps.canGetLocation()) {
-
+                Log.i("canGetLocation","yes");
                 this.lattitude = myGps.getLatitude();
                 this.longitude = myGps.getLongitude();
                 geocoder = new Geocoder(this, Locale.getDefault());
@@ -128,20 +128,24 @@ public class MainActivity extends Activity implements LocationListener {
     @Override
     protected void onPostResume() {
 
-        super.onPostResume();
-        checkLocation();
+super.onPostResume();
+        Log.i("onPostResume","onPostResume");
+        //checkLocation();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        checkLocation();
+        Log.i("onResume","onResume");
+        //checkLocation();
 
     }
 
     @Override
     protected void onRestart() {
+
         super.onRestart();
+        Log.i("onRestart","onRestart");
         checkLocation();
     }
 

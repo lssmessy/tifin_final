@@ -157,10 +157,7 @@ public class GPSTracker extends Service implements LocationListener {
      * */
     public void showSettingsAlert(){
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-        if(dismissDialog==false) {
-
-
-            // Setting Dialog Title
+                    // Setting Dialog Title
             alertDialog.setTitle("GPS settings");
 
             // Setting Dialog Message
@@ -187,7 +184,7 @@ public class GPSTracker extends Service implements LocationListener {
 
             // Showing Alert Message
             alertDialog.show();
-        }
+
 
 
     }
