@@ -18,7 +18,7 @@
         android:text="Search"
         android:id="@+id/searchbutton"
         android:height="50dp"
-        android:onClick="showCurrentLocation"
+        android:onClick="searchClick"
         android:layout_alignBottom="@+id/editText1"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

@@ -50,6 +50,8 @@ public class MainActivity extends Activity implements LocationListener {
     EditText et;
     private ConnectivityManager connectivityManager;
     double lattitude,longitude;
+    String street,City,State,Country,postal_code;
+
 
     //private LocationManager location;
     @Override
@@ -57,7 +59,7 @@ public class MainActivity extends Activity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         et=(EditText)findViewById(R.id.editText1);
-
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         checkLocation();
 
     }
@@ -69,9 +71,9 @@ public class MainActivity extends Activity implements LocationListener {
         {
             Log.i("Internet", "Disabled");
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setMessage("No internet connection is available. Please check for internet connection");
+            alert.setMessage("No internet connection is available. Please check your internet connection before using this app!");
             alert.setTitle("No Internet");
-            alert.setNegativeButton("Ok",new DialogInterface.OnClickListener() {
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -95,19 +97,19 @@ public class MainActivity extends Activity implements LocationListener {
                     e.printStackTrace();
                 }
                 if (address != null) {
-                    String City = address.get(0).getAddressLine(0);
-                    String state = address.get(0).getAddressLine(1);
-                    String Country = address.get(0).getAddressLine(2);
-                    map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+                    City = address.get(0).getAddressLine(0);
+                     State = address.get(0).getAddressLine(1);
+                     Country = address.get(0).getAddressLine(2);
+                   // map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
                     LatLng myLL = new LatLng(lattitude, longitude);
-                    map.addMarker(new MarkerOptions().position(myLL).title(City + "," + state + "," + Country));
+                    map.addMarker(new MarkerOptions().position(myLL).title(City + "," + State + "," + Country));
                     Toast.makeText(this, myLL.toString(), Toast.LENGTH_LONG).show();
                     CameraUpdate myCam = CameraUpdateFactory.newLatLngZoom(myLL, 14);
                    // map.addPolygon(new PolygonOptions().add(myLL).fillColor(Color.GRAY));
                     map.animateCamera(myCam);
                     map.addCircle(new CircleOptions().center(myLL).visible(true).radius(200));
                     map.setMyLocationEnabled(true);
-                    et.setText(City + "," + state + "," + Country);
+                    et.setText(City + "," + State + "," + Country);
 
                     map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                         @Override
@@ -169,8 +171,9 @@ super.onPostResume();
     }
 
 
-    public void showCurrentLocation(View view) {
-        
+    public void searchClick(View view) {
+
+
         if(!isempty()) {
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -180,17 +183,21 @@ super.onPostResume();
             List<Address> addresss = null;
             try {
                 addresss = geocoder.getFromLocationName(et.getText().toString(), 1);
+                Log.i("address",addresss.toString());
                 Address add = addresss.get(0);
 
                 if (addresss.size() > 0) {
                     lattitude = addresss.get(0).getLatitude();
                     longitude = addresss.get(0).getLongitude();
                     Toast.makeText(this, String.valueOf(lattitude) + "=>" + String.valueOf(longitude), Toast.LENGTH_SHORT).show();
-                }
+
                 List<Address> ad = geocoder.getFromLocation(lattitude, longitude, 1);
-                String City = ad.get(0).getAddressLine(0);
-                String state = ad.get(0).getAddressLine(1);
-                String Country = ad.get(0).getAddressLine(2);
+                   street = ad.get(0).getSubLocality();
+                 City = ad.get(0).getLocality();
+                 State =ad.get(0).getAdminArea();
+                 Country =ad.get(0).getCountryName();
+                 postal_code=ad.get(0).getAddressLine(3);
+                    checkNull();
                 Log.i("latlng", String.valueOf(lattitude) + "=>" + String.valueOf(longitude));
 
                 LatLng newLoc = new LatLng(lattitude, longitude);
@@ -200,11 +207,12 @@ super.onPostResume();
                     map.animateCamera(showLoc);
                     map.addCircle(new CircleOptions().center(newLoc).visible(true).radius(200));
 
-                    map.addMarker(new MarkerOptions().position(newLoc).title(City + "," + state + "," + Country));
-                    et.setText(City + "," + state + "," + Country);
+                    map.addMarker(new MarkerOptions().position(newLoc).title(street +" "+ City +" "+ State +" "+ Country +" "+postal_code));
+                    et.setText(street +" "+ City +" "+ State +" "+ Country);
 
                 } else {
                     Toast.makeText(this, String.valueOf(lattitude) + "=>" + String.valueOf(longitude), Toast.LENGTH_SHORT).show();
+                }
                 }
 
             } catch (IOException e) {
@@ -217,6 +225,31 @@ super.onPostResume();
 
         }
         else  Toast.makeText(this, "Enter something to search", Toast.LENGTH_LONG).show();
+
+    }
+
+    private void checkNull() {
+        if(street==null)
+            this.street="";
+        if(City==null)
+            this.City="";
+      if(State==null)
+            this.State="";
+      if(Country==null)
+            this.Country="";
+        else if(street==null&&City==null&&State==null&&Country==null)
+        {
+            AlertDialog.Builder alert=new AlertDialog.Builder(this);
+            alert.setTitle("No place found");
+            alert.setMessage("No place found for the entered location name. Please type a correct location name!");
+            alert.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
+        }
 
     }
 

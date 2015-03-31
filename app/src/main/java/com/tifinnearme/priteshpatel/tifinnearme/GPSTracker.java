@@ -158,10 +158,10 @@ public class GPSTracker extends Service implements LocationListener {
     public void showSettingsAlert(){
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
                     // Setting Dialog Title
-            alertDialog.setTitle("GPS settings");
+            alertDialog.setTitle("Location Services");
 
             // Setting Dialog Message
-            alertDialog.setMessage("GPS is not enabled.Please enable your location services before using this app");
+            alertDialog.setMessage("Your location services are not enabled.Please enable your location services in order to use this app!");
 
             // On pressing Settings button
             alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
