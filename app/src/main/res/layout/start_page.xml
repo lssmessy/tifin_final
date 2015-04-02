@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Welcome to TifinNearMe"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/tifinImage"
+        android:visibility="visible"
+        android:src="@drawable/tifin"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Are you "
+        android:id="@+id/areyou"
+        android:layout_marginTop="75dp"
+        android:layout_below="@+id/tifinImage"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Tifinvala"
+        android:id="@+id/tifinvala"
+        android:layout_alignTop="@+id/areyou"
+        android:layout_alignLeft="@+id/customer"
+        android:layout_alignStart="@+id/customer"
+        android:onClick="showTifinvala"
+        android:textColor="#3366FF"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="OR"
+        android:id="@+id/orTv"
+        android:layout_marginTop="43dp"
+        android:layout_below="@+id/tifinvala"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Customer?"
+        android:id="@+id/customer"
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/orTv"
+        android:layout_toRightOf="@+id/areyou"
+        android:layout_toEndOf="@+id/areyou"
+        android:onClick="showCustomer"
+        android:textColor="#FF0000"/>
+
+</RelativeLayout>
