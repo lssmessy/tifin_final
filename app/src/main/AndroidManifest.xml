@@ -53,7 +53,7 @@
 -->
         <activity
             android:name=".Customer_reg"
-            android:label="@string/app_name" >
+            android:label="Customer Registration" >
             <intent-filter>
                 <action android:name="com.tifinnearme.priteshpatel.tifinnearme.Cutomer_reg" />
 
@@ -62,7 +62,7 @@
         </activity>
         <activity
             android:name=".Tifinvala_reg"
-            android:label="@string/app_name" >
+            android:label="Tifinvala Registration" >
             <intent-filter>
                 <action android:name="com.tifinnearme.priteshpatel.tifinnearme.Tifinvala_reg" />
 
