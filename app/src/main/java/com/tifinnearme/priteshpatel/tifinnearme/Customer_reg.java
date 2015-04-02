@@ -107,20 +107,18 @@ public class Customer_reg extends ActionBarActivity {
 
         RelativeLayout.LayoutParams signup_params=new RelativeLayout.LayoutParams
                 (RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        //signup_params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        signup_params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
         signup_params.addRule(RelativeLayout.BELOW,mobile.getId());
-        //signup_params.setMargins(20,0,0,300);
-        signup_params.setMargins(0,30,0,0);
+        signup_params.setMargins(50,30,0,0);
 
 
         //back button
 
         RelativeLayout.LayoutParams back_params=new RelativeLayout.LayoutParams
                 (RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        back_params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        back_params.addRule(RelativeLayout.BELOW, signup.getId());
-        back_params.setMargins(0,50,0,0);
+        back_params.addRule(RelativeLayout.RIGHT_OF,signup.getId());
+        back_params.addRule(RelativeLayout.BELOW, mobile.getId());
+        back_params.setMargins(50,30,0,0);
 
         //mobile text position
         RelativeLayout.LayoutParams mobile_params=new RelativeLayout.LayoutParams
