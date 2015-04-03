@@ -182,7 +182,7 @@ public class Tifinvala_reg extends ActionBarActivity{
     }
 
     public void onBackClicked(View view){
-        Intent i=new Intent(this,Starting_page.class);
+        Intent i=new Intent(this,SignUp_page.class);
         startActivity(i);
 
     }

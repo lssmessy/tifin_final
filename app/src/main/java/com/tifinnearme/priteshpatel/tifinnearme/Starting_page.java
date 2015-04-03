@@ -2,14 +2,17 @@ package com.tifinnearme.priteshpatel.tifinnearme;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -58,9 +61,9 @@ public class Starting_page extends ActionBarActivity{
                 if(validations()) {
                     InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(login.getWindowToken(),0);
-
-                    Intent i = new Intent(Starting_page.this, MainActivity.class);
-                    startActivity(i);
+                    new Login_background().execute();
+                    /*Intent i = new Intent(Starting_page.this, MainActivity.class);
+                    startActivity(i);*/
                 }
              }
         });
@@ -178,4 +181,55 @@ public class Starting_page extends ActionBarActivity{
     }
 
 
+    private class Login_background extends AsyncTask<Void,Void,Void>{
+        ProgressDialog dialog;
+        static final String p="MyLog";
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+            dialog=new ProgressDialog(Starting_page.this);
+            dialog.setMessage("Checking credentials...");
+            dialog.setTitle("Logging");
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.show();
+            
+
+            Log.i(p, "onPreExecute");
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            Intent i = new Intent(Starting_page.this, MainActivity.class);
+
+            try {
+                Thread.sleep(2000);
+                dialog.dismiss();
+                startActivity(i);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.i(p,"doInBackground after 2 secs");
+            return null;
+        }
+
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.i(p,"onPostExecute");
+            dialog.dismiss();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            Log.i(p,"onProgressUpdate");
+            dialog.dismiss();
+        }
+    }
 }
