@@ -71,7 +71,7 @@
         </activity>
         <activity
             android:name=".SignUp_page"
-            android:label="Customer Registration" >
+            android:label="Sign Up" >
             <intent-filter>
                 <action android:name="com.tifinnearme.priteshpatel.tifinnearme.SignUp_page" />
 

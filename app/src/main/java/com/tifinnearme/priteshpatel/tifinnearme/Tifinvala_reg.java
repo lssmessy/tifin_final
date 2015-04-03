@@ -39,7 +39,7 @@ public class Tifinvala_reg extends ActionBarActivity{
         rl.setBackgroundColor(Color.parseColor("#0099FF"));
         //Edittext initialization
         username=new EditText(this);
-        username.setHint("Username");
+        username.setHint("Tifin service or Username");
         username.setId(1);
         username.setInputType(InputType.TYPE_CLASS_TEXT);
         username.setImeOptions(EditorInfo.IME_ACTION_NEXT);//To show next button on keypad
