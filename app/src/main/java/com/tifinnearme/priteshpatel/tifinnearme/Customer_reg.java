@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -35,8 +36,18 @@ public class Customer_reg extends ActionBarActivity {
         //setContentView(R.layout.customer_reg);
         ScrollView scroll_view=new ScrollView(this);
         scroll_view.setBackgroundColor(Color.parseColor("#FFCC99"));
+
         RelativeLayout rl=new RelativeLayout(this);
         rl.setBackgroundColor(Color.parseColor("#FFCC99"));
+        rl.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+                return true;
+            }
+        });
+
         //Edittext initialization
         username=new EditText(this);
         username.setHint("Username");
@@ -88,11 +99,13 @@ public class Customer_reg extends ActionBarActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mobile.getWindowToken(),0);
                 onSignUp(v);
             }
         });
 
-        back=new Button(this);
+       /* back=new Button(this);
         back.setBackgroundColor(Color.parseColor("#A5ABAB"));
         back.setText("< Back");
         back.setId(7);
@@ -101,7 +114,7 @@ public class Customer_reg extends ActionBarActivity {
             public void onClick(View v) {
                 onBackClicked(v);
             }
-        });
+        });*/
 
         //Setting positions of sign up buttons
 
@@ -114,11 +127,11 @@ public class Customer_reg extends ActionBarActivity {
 
         //back button
 
-        RelativeLayout.LayoutParams back_params=new RelativeLayout.LayoutParams
+        /*RelativeLayout.LayoutParams back_params=new RelativeLayout.LayoutParams
                 (RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         back_params.addRule(RelativeLayout.RIGHT_OF,signup.getId());
         back_params.addRule(RelativeLayout.BELOW, mobile.getId());
-        back_params.setMargins(50,30,0,0);
+        back_params.setMargins(50,30,0,0);*/
 
         //mobile text position
         RelativeLayout.LayoutParams mobile_params=new RelativeLayout.LayoutParams
@@ -169,20 +182,21 @@ public class Customer_reg extends ActionBarActivity {
         rl.addView(address,address_params);
         rl.addView(mobile,mobile_params);
         rl.addView(signup,signup_params);
-        rl.addView(back,back_params);
+        //rl.addView(back,back_params);
 
         scroll_view.addView(rl);
         setContentView(scroll_view);
 
     }
 
-    public void onBackClicked(View view){
+   /* public void onBackClicked(View view){
         Intent i=new Intent(this,SignUp_page.class);
         startActivity(i);
-    }
+    }*/
     public void onSignUp(View view){
         new LoadinBackGround().execute();
     }
+
     public class LoadinBackGround extends AsyncTask<Void, Void, Void>{
         ProgressDialog dialog;
         static final String p="MyLog";

@@ -27,7 +27,7 @@ import android.widget.ScrollView;
  */
 public class Starting_page extends ActionBarActivity{
     EditText username,password;
-    Button login,signup;
+    Button login,signup,webcall;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +80,26 @@ public class Starting_page extends ActionBarActivity{
                 startActivity(i);
             }
         });
+
+        webcall=new Button(this);
+        webcall.setText("Webcall");
+        webcall.setId(5);
+        webcall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(Starting_page.this,Webcall.class);
+                startActivity(i);
+            }
+        });
+
+        RelativeLayout.LayoutParams webcall_params=new RelativeLayout.LayoutParams
+                (RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        //signup_params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        webcall_params.addRule(RelativeLayout.RIGHT_OF,signup.getId());
+        webcall_params.addRule(RelativeLayout.BELOW, password.getId());
+        webcall_params.setMargins(50,30,0,0);
+
+
         RelativeLayout.LayoutParams signup_params=new RelativeLayout.LayoutParams
                 (RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         //signup_params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -116,7 +136,7 @@ public class Starting_page extends ActionBarActivity{
         rl.addView(password,password_params);
         rl.addView(login,login_params);
         rl.addView(signup,signup_params);
-
+        rl.addView(webcall,webcall_params);
         scroll_view.addView(rl);
         setContentView(scroll_view);
 

@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -37,6 +38,15 @@ public class Tifinvala_reg extends ActionBarActivity{
         scroll_view.setBackgroundColor(Color.parseColor("#0099FF"));
         RelativeLayout rl=new RelativeLayout(this);
         rl.setBackgroundColor(Color.parseColor("#0099FF"));
+        rl.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+                return true;
+            }
+        });
+
         //Edittext initialization
         username=new EditText(this);
         username.setHint("Tifin service or Username");
@@ -91,11 +101,13 @@ public class Tifinvala_reg extends ActionBarActivity{
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mobile.getWindowToken(),0);
                 onSignUp(v);
             }
         });
 
-        back=new Button(this);
+       /* back=new Button(this);
         back.setBackgroundColor(Color.parseColor("#A5ABAB"));
         back.setText("< Back");
         back.setId(7);
@@ -105,7 +117,7 @@ public class Tifinvala_reg extends ActionBarActivity{
                 onBackClicked(v);
             }
         });
-
+*/
         //Setting positions of sign up buttons
 
         RelativeLayout.LayoutParams signup_params=new RelativeLayout.LayoutParams
@@ -174,18 +186,18 @@ public class Tifinvala_reg extends ActionBarActivity{
         rl.addView(address,address_params);
         rl.addView(mobile,mobile_params);
         rl.addView(signup,signup_params);
-        rl.addView(back,back_params);
+       // rl.addView(back,back_params);
 
         scroll_view.addView(rl);
         setContentView(scroll_view);
 
     }
 
-    public void onBackClicked(View view){
+    /*public void onBackClicked(View view){
         Intent i=new Intent(this,SignUp_page.class);
         startActivity(i);
 
-    }
+    }*/
     public void onSignUp(View view){
         new LoadinBackGround().execute();
     }

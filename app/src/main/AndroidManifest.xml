@@ -87,6 +87,16 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Webcall"
+            android:label="Sign Up" >
+            <intent-filter>
+                <action android:name="com.tifinnearme.priteshpatel.tifinnearme.Webcall" />
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
