@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Helow there, a fragment"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="35dp"/>
+    <!--<include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+-->
+    <!--<fragment
+        android:layout_below="@+id/app_bar"
+        android:id="@+id/map_frag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.tifinnearme.priteshpatel.materialdrawer.Map"
+        tools:layout="@layout/mapview" />
+-->
+</RelativeLayout>

@@ -1,6 +1,5 @@
 package com.tifinnearme.priteshpatel.tifinnearme;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -222,7 +221,7 @@ public class Starting_page extends ActionBarActivity{
         @Override
         protected Void doInBackground(Void... params) {
 
-            Intent i = new Intent(Starting_page.this, MainActivity.class);
+            Intent i = new Intent(Starting_page.this, Main_Map.class);
 
             try {
                 Thread.sleep(2000);
