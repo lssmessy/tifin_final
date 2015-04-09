@@ -3,6 +3,7 @@ package com.tifinnearme.priteshpatel.tifinnearme;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -13,10 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
     public static Toolbar toolbar;
+    boolean doubleBackToExitPressedOnce;
     private HomeFragment homeFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,23 @@ public class MainActivity extends ActionBarActivity {
            //((MainActivity)activity).onSectionAttched(getArguments().getInt(SECTION_NUMBER));
         }
     }
+    @Override
+    public void onBackPressed() {
 
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
 
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 }
