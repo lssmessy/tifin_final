@@ -56,16 +56,17 @@ public class Main_Map extends ActionBarActivity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar=(Toolbar)findViewById(R.id.app_bar);
+        /*toolbar=(Toolbar)findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        /*et = (EditText) findViewById(R.id.editText1);*/
+        getSupportActionBar().setHomeButtonEnabled(true);*/
+        et = (EditText) findViewById(R.id.editText1);
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
         checkLocation();
 
 
     }
+
 
     public void checkLocation() {
 

@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
 
         getSupportActionBar().setHomeButtonEnabled(true);
         navFrag.setUp(R.id.drawer_fragment,drawerLayout,toolbar);
-        startActivity(new Intent(this,Main_Map.class));
+        //startActivity(new Intent(this,Main_Map.class));
 
         //Create object for drawer layout
 
@@ -91,14 +91,5 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private void onSectionAttched(int anInt) {
-
-        switch (anInt){
-            case 1:
-                toolbar.getTitle();
-                break;
-
-        }
-    }
 
 }

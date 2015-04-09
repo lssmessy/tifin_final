@@ -2,6 +2,7 @@ package com.tifinnearme.priteshpatel.tifinnearme;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -146,6 +147,7 @@ public class NavigationFragment extends Fragment implements MyAdapter.ClikListen
 
         DataList ob= myAdapter.data.get(position);
         MainActivity.toolbar.setTitle(ob.iconName);
+        mDrawerLayout.closeDrawers();
 
         Fragment fragment;
 
@@ -156,8 +158,11 @@ public class NavigationFragment extends Fragment implements MyAdapter.ClikListen
             case 0:
                 fragment=new Map();
                 fragmentTransaction.replace(R.id.mainContent,fragment);
+
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                startActivity(new Intent(getActivity(),Main_Map.class));
+
                 break;
             case 1:
                 fragment=new Profile();
@@ -196,7 +201,7 @@ public class NavigationFragment extends Fragment implements MyAdapter.ClikListen
                 fragmentTransaction.commit();
                 break;
         }
-        mDrawerLayout.closeDrawers();
+
 
     }
 }
