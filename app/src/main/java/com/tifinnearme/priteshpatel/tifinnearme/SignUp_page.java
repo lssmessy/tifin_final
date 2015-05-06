@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tifinnearme.priteshpatel.tifinnearme.cutomer.Customer_reg;
+import com.tifinnearme.priteshpatel.tifinnearme.tifinvala.Tifinvala_reg;
+
 /**
  * Created by pritesh.patel on 03-04-15.
  */

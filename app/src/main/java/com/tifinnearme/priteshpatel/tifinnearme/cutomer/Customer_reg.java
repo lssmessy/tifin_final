@@ -1,4 +1,4 @@
-package com.tifinnearme.priteshpatel.tifinnearme;
+package com.tifinnearme.priteshpatel.tifinnearme.cutomer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,11 +23,14 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.tifinnearme.priteshpatel.tifinnearme.MainActivity;
+import com.tifinnearme.priteshpatel.tifinnearme.postdata.Post_Data;
+
 /**
  * Created by pritesh.patel on 02-04-15.
  */
 public class Customer_reg extends ActionBarActivity {
-    EditText username,password,email,address,mobile;
+    public EditText username,password,email,address,mobile;
     Button signup,back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +198,7 @@ public class Customer_reg extends ActionBarActivity {
     }*/
     public void onSignUp(View view){
         new LoadinBackGround().execute();
+
     }
 
     public class LoadinBackGround extends AsyncTask<Void, Void, Void>{
@@ -217,7 +221,7 @@ public class Customer_reg extends ActionBarActivity {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Intent i=new Intent(Customer_reg.this,MainActivity.class);
+            /*Intent i=new Intent(Customer_reg.this,MainActivity.class);
 
             try {
                 Thread.sleep(2000);
@@ -227,7 +231,9 @@ public class Customer_reg extends ActionBarActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Log.i(p,"doInBackground after 2 secs");
+            Log.i(p,"doInBackground after 2 secs");*/
+            Post_Data post_data=new Post_Data();
+            post_data.postData();
             return null;
         }
 

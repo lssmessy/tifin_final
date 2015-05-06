@@ -16,6 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tifinnearme.priteshpatel.tifinnearme.cutomer.Mytifins;
+import com.tifinnearme.priteshpatel.tifinnearme.cutomer.Notifications;
+import com.tifinnearme.priteshpatel.tifinnearme.cutomer.Profile;
+import com.tifinnearme.priteshpatel.tifinnearme.cutomer.Requests;
+import com.tifinnearme.priteshpatel.tifinnearme.cutomer.Search;
+import com.tifinnearme.priteshpatel.tifinnearme.cutomer.Settings;
+
 import java.util.ArrayList;
 import java.util.List;
 

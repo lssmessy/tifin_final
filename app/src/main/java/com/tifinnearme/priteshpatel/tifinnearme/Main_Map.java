@@ -31,6 +31,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tifinnearme.priteshpatel.tifinnearme.maps_class.GPSTracker;
 
 import java.io.IOException;
 import java.util.List;

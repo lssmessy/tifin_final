@@ -1,4 +1,4 @@
-package com.tifinnearme.priteshpatel.tifinnearme;
+package com.tifinnearme.priteshpatel.tifinnearme.tifinvala;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.tifinnearme.priteshpatel.tifinnearme.MainActivity;
 
 /**
  * Created by pritesh.patel on 02-04-15.

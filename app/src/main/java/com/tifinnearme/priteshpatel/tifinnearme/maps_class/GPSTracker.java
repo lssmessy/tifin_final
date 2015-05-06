@@ -1,4 +1,4 @@
-package com.tifinnearme.priteshpatel.tifinnearme;
+package com.tifinnearme.priteshpatel.tifinnearme.maps_class;
 
 import android.app.AlertDialog;
 import android.app.Service;
