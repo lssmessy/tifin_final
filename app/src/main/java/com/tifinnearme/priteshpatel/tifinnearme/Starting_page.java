@@ -20,6 +20,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 
 /**
  * Created by PRITESH on 03-04-2015.
@@ -220,8 +229,76 @@ public class Starting_page extends ActionBarActivity{
 
         @Override
         protected Void doInBackground(Void... params) {
+            dialog.dismiss();
+            String data = null;
+            try {
+                data = URLEncoder.encode("Username", "UTF-8")
+                        + "=" + URLEncoder.encode(username.getText().toString(), "UTF-8");
+                data += "&" + URLEncoder.encode("Password", "UTF-8") + "="
+                        + URLEncoder.encode(password.getText().toString(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
-            Intent i = new Intent(Starting_page.this, Main_Map.class);
+
+            String text = "";
+            BufferedReader reader=null;
+
+            // Send data
+            try
+            {
+
+                // Defined URL  where to send data
+                URL url = new URL("http://whtsnext.cuccfree.com/apis/login_check.php");
+
+                // Send POST data request
+
+                URLConnection conn = url.openConnection();
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                // Get the server response
+
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while((line = reader.readLine()) != null)
+                {
+                    // Append server response in string
+                    sb.append(line + "\n");
+                }
+
+
+                text = sb.toString();
+                final String finalText = text;
+                Starting_page.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(Starting_page.this, finalText, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+                try
+                {
+
+                    reader.close();
+                }
+
+                catch(Exception ex) {}
+            }
+
+            // Show response on activity
+
+            /*Intent i = new Intent(Starting_page.this, Main_Map.class);
 
             try {
                 Thread.sleep(2000);
@@ -231,7 +308,8 @@ public class Starting_page extends ActionBarActivity{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Log.i(p,"doInBackground after 2 secs");
+            Log.i(p,"doInBackground after 2 secs");*/
+
             return null;
         }
 
@@ -241,7 +319,7 @@ public class Starting_page extends ActionBarActivity{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.i(p,"onPostExecute");
-            dialog.dismiss();
+
         }
 
         @Override
