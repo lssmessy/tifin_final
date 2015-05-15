@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -22,13 +21,27 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.tifinnearme.priteshpatel.tifinnearme.json.JSONParser;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by PRITESH on 03-04-2015.
@@ -36,6 +49,9 @@ import java.net.URLEncoder;
 public class Starting_page extends ActionBarActivity{
     EditText username,password;
     Button login,signup,webcall;
+    JSONParser jsonParser = new JSONParser();
+    private static String register_user = "http://whtsnext.cuccfree.com/apis/validate_user.php";
+    private ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +85,12 @@ public class Starting_page extends ActionBarActivity{
                 if(validations()) {
                     InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(login.getWindowToken(),0);
-                    new Login_background().execute();
+
+                    List<NameValuePair> params=new ArrayList<NameValuePair>();
+                    params.add( new BasicNameValuePair("username",username.getText().toString()));
+                    params.add( new BasicNameValuePair("password",password.getText().toString()));
+                    Login_background background=new Login_background(params);
+                    background.execute();
                     /*Intent i = new Intent(Starting_page.this, MainActivity.class);
                     startActivity(i);*/
                 }
@@ -209,7 +230,96 @@ public class Starting_page extends ActionBarActivity{
     }
 
 
-    private class Login_background extends AsyncTask<Void,Void,Void>{
+    class Login_background extends  AsyncTask<String,String,Void>{
+        List<NameValuePair> params;
+        String message=null;
+
+        public Login_background(List<NameValuePair> params){
+            this.params=params;
+        }
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            dialog = new ProgressDialog(Starting_page.this);
+            dialog.setMessage("We are Logging in. Please wait . . .");
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+
+
+        @Override
+        protected Void doInBackground(String... paras) {
+            DefaultHttpClient httpClient=new DefaultHttpClient();
+            HttpPost httpPost=new HttpPost(register_user);
+            JSONObject jsonObject=new JSONObject();
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+            try {
+
+                jsonObject.put("username",username.getText().toString());
+                jsonObject.put("password",password.getText().toString());
+                StringEntity se=new StringEntity("json="+jsonObject.toString());
+                //httpPost.addHeader("content-type", "application/x-www-form-urlencoded");
+                se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,"application/json"));
+                httpPost.setEntity(se);
+               String req=se.toString();
+
+                HttpResponse response=httpClient.execute(httpPost);
+
+
+                if(response!=null){
+                    InputStream is=response.getEntity().getContent();
+                    BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(is));
+                    StringBuilder sb=new StringBuilder();
+                    String line=null;
+                    while((line=bufferedReader.readLine())!=null){
+                        sb.append(line+"\n");
+                    }
+                    this.message=sb.toString();
+                    //Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            //JSONObject jsonObject=jsonParser.makeHttpRequest(register_user,"POST",this.params);
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            dialog.dismiss();
+            //this assumes that the response looks like this:
+            //{"success" : true }
+            /*String message = null;
+            try {
+                message = result.getString("message");
+            } catch (JSONException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            boolean success = false;
+            try {
+                success = result.getBoolean("success");
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Toast.makeText(getBaseContext(), success ? "We are good to go." : "Something went wrong!",
+                    Toast.LENGTH_SHORT).show();*/
+            Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /*private class Login_background extends AsyncTask<Void,Void,Void>{
         ProgressDialog dialog;
         static final String p="MyLog";
         @Override
@@ -298,7 +408,7 @@ public class Starting_page extends ActionBarActivity{
 
             // Show response on activity
 
-            /*Intent i = new Intent(Starting_page.this, Main_Map.class);
+            *//*Intent i = new Intent(Starting_page.this, Main_Map.class);
 
             try {
                 Thread.sleep(2000);
@@ -308,7 +418,7 @@ public class Starting_page extends ActionBarActivity{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Log.i(p,"doInBackground after 2 secs");*/
+            Log.i(p,"doInBackground after 2 secs");*//*
 
             return null;
         }
@@ -328,5 +438,5 @@ public class Starting_page extends ActionBarActivity{
             Log.i(p,"onProgressUpdate");
             dialog.dismiss();
         }
-    }
+    }*/
 }
